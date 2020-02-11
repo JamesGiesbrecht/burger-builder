@@ -83,6 +83,7 @@ class BurgerBuilder extends Component {
 
         return (
             <>
+                {/* The shouldComponentUpdate method will prevent OrderSummary rendering unnecessarily */}
                 <Modal 
                     show={this.state.purchasing}
                     closeModal={this.purchaseCancelHandler}
