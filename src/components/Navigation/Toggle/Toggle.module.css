@@ -1,0 +1,18 @@
+.Toggle {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+.Toggle div {
+  width: 35px;
+  height: 5px;
+  background-color: white;
+  margin: 6px 0;
+  transition: 0.4s;
+}
+
+@media (min-width: 500px) {
+  .Toggle {
+    display: none;
+  }
+}
