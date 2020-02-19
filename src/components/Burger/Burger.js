@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from './Burger.module.css'
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient'
+import { withRouter } from 'react-router-dom' // wrapping a component with withRouter enables access to the router props
 
 const Burger = (props) => {
     //  Turns object keys (meat, cheese, etc.) into an array
@@ -35,4 +36,4 @@ const Burger = (props) => {
     )
 }
 
-export default Burger
+export default withRouter(Burger)
