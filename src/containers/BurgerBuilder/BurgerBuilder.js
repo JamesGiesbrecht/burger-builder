@@ -87,7 +87,16 @@ class BurgerBuilder extends Component {
         //         console.log(error)
         //         this.setState({isLoading: false, purchasing: false})
         //     })
-        this.props.history.push('/checkout')
+        const burgerParams = []
+        for (let i in this.state.ingredients) {
+            //  encodeURIComponent isnt neccassary since these are simple components
+            burgerParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
+        }
+
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + burgerParams.join('&')
+        })
     }
 
     purchaseHandler = () => {
