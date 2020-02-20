@@ -5,7 +5,7 @@ const Input = (props) => {
     let inputElement = null
     const inputClasses = [classes.InputElement]
 
-    if (!props.isValid && props.shouldValidate) {
+    if (!props.isValid && props.shouldValidate && props.touched) {
         inputClasses.push(classes.Invalid)
     }
 
@@ -59,6 +59,7 @@ const Input = (props) => {
         <div className={classes.Input}>
             <label className={classes.Label}>{props.label}</label>
             {inputElement}
+            <p className={classes.ValidationError}>{props.validationError ? props.validationError : null}</p>
         </div>
     )
 }

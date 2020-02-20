@@ -18,7 +18,9 @@ class ContactData extends Component {
                 valid: false,
                 validation: {
                     required: true
-                }
+                },
+                validationError: null,
+                touched: false
             },
             street: {
                 elementType: 'input',
@@ -30,7 +32,9 @@ class ContactData extends Component {
                 valid: false,
                 validation: {
                     required: true
-                }
+                },
+                validationError: null,
+                touched: false
             },
             postalCode: {
                 elementType: 'input',
@@ -44,7 +48,9 @@ class ContactData extends Component {
                     required: true,
                     minLength: 6,
                     maxLength: 6
-                }
+                },
+                validationError: null,
+                touched: false
             },
             country: {
                 elementType: 'input',
@@ -56,7 +62,9 @@ class ContactData extends Component {
                 valid: false,
                 validation: {
                     required: true
-                }
+                },
+                validationError: null,
+                touched: false
             },
             email: {
                 elementType: 'input',
@@ -68,7 +76,9 @@ class ContactData extends Component {
                 valid: false,
                 validation: {
                     required: true
-                }
+                },
+                validationError: null,
+                touched: false
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -79,7 +89,8 @@ class ContactData extends Component {
                 value: 'fastest'
             }
         },
-        isLoading: false
+        isLoading: false,
+        formIsValid: false
     }
 
     checkValid = (el) => {
@@ -88,6 +99,7 @@ class ContactData extends Component {
         if (el.validation.required && el.value.trim() === '') {
             //  if value is empty, valid is false
             isValid = false
+            this.setState({})
         }
 
         if (el.validation.minLength && el.value.length < el.validation.minLength) {
@@ -110,10 +122,25 @@ class ContactData extends Component {
         const updatedElement = { ...updatedForm[name] }
         //  Updating the value of that element
         updatedElement.value = e.target.value
-        updatedElement.validation.valid = this.checkValid(updatedElement)
+        if (updatedElement.validation) {
+            updatedElement.valid = this.checkValid(updatedElement)
+            updatedElement.touched = true
+            updatedElement.validationError = updatedElement.valid ? null : "Please enter a valid " + name
+        }
         // copying the new element to the new form
         updatedForm[name] = updatedElement
-        this.setState({ orderForm: updatedForm })
+        
+        //  Defaulting overall validity to true
+        let formIsValid = true
+        for (let input in updatedForm) {
+            //  Not checking validity if input doesnt have validation rules
+            if (updatedForm[input].validation) {
+                formIsValid = updatedForm[input].valid
+            }
+            //  breaking out of the loop if any of the elements is invalid
+            if (!formIsValid) break
+        }
+        this.setState({ orderForm: updatedForm, formIsValid: formIsValid })
     }
 
     orderHandler = (e) => {
@@ -163,9 +190,11 @@ class ContactData extends Component {
                         changed={(e) => this.inputChangedHandler(e, input.id)}
                         isValid={input.config.valid}
                         shouldValidate={input.config.validation}
+                        touched={input.config.touched}
+                        validationError={input.config.validationError}
                     />
                 ))}
-                <Button btnType="Success">ORDER</Button>
+                <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
             </form>
         </>
         )
