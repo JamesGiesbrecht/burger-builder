@@ -51,21 +51,39 @@ class ContactData extends Component {
             deliveryMethod: {
                 elementType: 'select',
                 elementConfig: {
-                    options: [{value: 'fastet', display: 'Fastest'},
+                    options: [{value: 'fastest', display: 'Fastest'},
                               {value: 'cheapest', display: 'Cheapest'}]
                 },
-                value: ''
+                value: 'fastest'
             }
         },
         isLoading: false
     }
 
+    inputChangedHandler = (e, name) => {
+        //  Cloning the form object
+        const updatedForm = { ...this.state.orderForm }
+        //  Since the spread operator is a shallow clone we also need to copy the affected element
+        const updatedElement = { ...updatedForm[name] }
+        //  Updating the value of that element
+        updatedElement.value = e.target.value
+        // copying the new element to the new form
+        updatedForm[name] = updatedElement
+        this.setState({ orderForm: updatedForm })
+    }
+
     orderHandler = (e) => {
         e.preventDefault()
         this.setState({isLoading: true})
+        const formData = {}
+        //  Mapping each element in orderform to its value
+        for (let formName in this.state.orderForm) {
+            formData[formName] = this.state.orderForm[formName].value
+        }
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.price
+            price: this.props.price,
+            orderData: formData
         }
         axios.post('/orders.json', order)
             .then(response => {
@@ -91,16 +109,17 @@ class ContactData extends Component {
         let form = (
         <>
             <h4>Enter your Contact Data</h4>
-            <form>
+            <form onSubmit={this.orderHandler}>
                 {inputs.map(input => (
                     <Input
                         key={input.id}
                         elementType={input.config.elementType}
                         elementConfig={input.config.elementConfig}
                         value={input.config.value}
+                        changed={(e) => this.inputChangedHandler(e, input.id)}
                     />
                 ))}
-                <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+                <Button btnType="Success">ORDER</Button>
             </form>
         </>
         )
