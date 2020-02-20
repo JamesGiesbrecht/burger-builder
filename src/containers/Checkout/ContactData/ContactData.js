@@ -15,8 +15,8 @@ class ContactData extends Component {
                     placeholder: 'Your Name'
                 },
                 value: '',
+                valid: false,
                 validation: {
-                    valid: false,
                     required: true
                 }
             },
@@ -27,8 +27,8 @@ class ContactData extends Component {
                     placeholder: 'Street'
                 },
                 value: '',
+                valid: false,
                 validation: {
-                    valid: false,
                     required: true
                 }
             },
@@ -39,8 +39,8 @@ class ContactData extends Component {
                     placeholder: 'Postal Code'
                 },
                 value: '',
+                valid: false,
                 validation: {
-                    valid: false,
                     required: true,
                     minLength: 6,
                     maxLength: 6
@@ -53,8 +53,8 @@ class ContactData extends Component {
                     placeholder: 'Country'
                 },
                 value: '',
+                valid: false,
                 validation: {
-                    valid: false,
                     required: true
                 }
             },
@@ -65,8 +65,8 @@ class ContactData extends Component {
                     placeholder: 'Your Email'
                 },
                 value: '',
+                valid: false,
                 validation: {
-                    valid: false,
                     required: true
                 }
             },
@@ -76,10 +76,7 @@ class ContactData extends Component {
                     options: [{value: 'fastest', display: 'Fastest'},
                               {value: 'cheapest', display: 'Cheapest'}]
                 },
-                value: 'fastest',
-                validation: {
-                    // valid: false
-                }
+                value: 'fastest'
             }
         },
         isLoading: false
@@ -164,6 +161,8 @@ class ContactData extends Component {
                         elementConfig={input.config.elementConfig}
                         value={input.config.value}
                         changed={(e) => this.inputChangedHandler(e, input.id)}
+                        isValid={input.config.valid}
+                        shouldValidate={input.config.validation}
                     />
                 ))}
                 <Button btnType="Success">ORDER</Button>
