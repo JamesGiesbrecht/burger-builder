@@ -9,13 +9,6 @@ import axios from '../../axios/axios-orders'
 import { connect } from 'react-redux'
 import * as actionTypes from '../../store/actions'
 
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese: 0.4,
-    meat: 1.3,
-    bacon: 0.7
-}
-
 class BurgerBuilder extends Component {
     state = {
         ingredients: null,
@@ -80,7 +73,6 @@ class BurgerBuilder extends Component {
         let burger = this.state.error ? <p>Ingredients cannot be loaded</p> : <Spinner />
 
         //  Display burger after retriving from db
-        console.log(this.props)
         if (this.props.ingredients) {
             burger = 
                 <>
