@@ -56,7 +56,7 @@ const reducer = (state = initialState, action) => {
             newIngredients = {...state.ingredients}
             newIngredients[action.ingredient] = newCount
             //  Subtracting the price of the ingredient to the total
-            newPrice = state.totalPrice - INGREDIENT_PRICES[action.ingredient]
+            newPrice = state.price - INGREDIENT_PRICES[action.ingredient]
             return {
                 ...state,
                 ingredients: newIngredients,
