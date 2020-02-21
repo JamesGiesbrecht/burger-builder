@@ -11,10 +11,6 @@ import * as actionTypes from '../../store/actions'
 
 class BurgerBuilder extends Component {
     state = {
-        ingredients: null,
-        totalPrice: 4,
-        purchasable: false,
-
         //  Following 3 are more local UI state
         purchasing: false,
         isLoading: false,
@@ -47,17 +43,17 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: true })
     }
 
-    updatePurchaseState(ingredients) {
-        const sum = Object.keys(ingredients)
+    updatePurchaseState() {
+        const sum = Object.keys(this.props.ingredients)
             .map(igKey => {
-                return ingredients[igKey]
+                return this.props.ingredients[igKey]
             })
             //  Taking the value of each ingredient and adding it up
             .reduce((sum, el) => {
                 return sum + el
             }, 0)
         //  If sum is above 0 it goes to true
-        this.setState( {purchasable: sum > 0 })
+        return sum > 0
     }
     
     render() {
@@ -82,7 +78,7 @@ class BurgerBuilder extends Component {
                             ingredientRemoved={this.props.onIngredientRemoved}
                             disabled={disabledInfo}
                             price={this.props.price}
-                            purchasable={this.props.purchasable}
+                            purchasable={this.updatePurchaseState()}
                             purchasing={this.purchaseHandler}/>
                 </>
             orderSummary = 
