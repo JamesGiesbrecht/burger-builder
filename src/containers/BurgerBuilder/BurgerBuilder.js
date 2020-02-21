@@ -19,6 +19,8 @@ class BurgerBuilder extends Component {
         ingredients: null,
         totalPrice: 4,
         purchasable: false,
+
+        //  Following 3 are more local UI state
         purchasing: false,
         isLoading: false,
         error: false
