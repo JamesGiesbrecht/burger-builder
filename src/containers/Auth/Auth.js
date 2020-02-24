@@ -117,9 +117,21 @@ class Auth extends Component {
     }
 
     switchAuthModeHandler = () => {
+        // Quick and dirty reset password fields
+        const newControls = {...this.state.controls}
+        const newPassword = {...newControls.password}
+        const newPasswordConfirm = {...newControls.passwordConfirm}
+        newPassword.value = ''
+        newPasswordConfirm.value = ''
+        newPassword.touched = false
+        newPasswordConfirm.touched = false
+        newControls.password = newPassword
+        newControls.passwordConfirm = newPasswordConfirm
+
         this.setState(prevState => {
             return {
-                isSignUp: !prevState.isSignUp
+                isSignUp: !prevState.isSignUp,
+                controls: newControls
             }
         })
     }
