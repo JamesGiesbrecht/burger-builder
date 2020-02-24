@@ -39,8 +39,25 @@ class Auth extends Component {
                 },
                 validationError: null,
                 touched: false
+            },
+            passwordConfirm: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'password',
+                    placeholder: 'Confirm Password'
+                },
+                value: '',
+                valid: false,
+                validation: {
+                    required: true,
+                    minLength: 6,
+                    matches: 'password'
+                },
+                validationError: null,
+                touched: false
             }
-        }
+        },
+        isSignUp: true
     }
 
     checkValid = (el) => {
@@ -69,6 +86,12 @@ class Auth extends Component {
             }
         }
 
+        if (el.validation.matches) {
+            if (this.state.controls[el.validation.matches].value !== el.value) {
+                isValid = false
+            }
+        }
+
         return isValid
     }
 
@@ -93,6 +116,14 @@ class Auth extends Component {
         this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value)
     }
 
+    switchAuthModeHandler = () => {
+        this.setState(prevState => {
+            return {
+                isSignUp: !prevState.isSignUp
+            }
+        })
+    }
+
     render() {
         const inputs = []
         for (let key in this.state.controls) {
@@ -102,19 +133,25 @@ class Auth extends Component {
             })
         }
 
-        const form = inputs.map(input => (
-            <Input
-                key={input.id}
-                elementType={input.config.elementType}
-                elementConfig={input.config.elementConfig}
-                value={input.config.value}
-                changed={(e) => this.inputChangedHandler(e, input.id)}
-                isValid={input.config.valid}
-                shouldValidate={input.config.validation}
-                touched={input.config.touched}
-                validationError={input.config.validationError}
-            />
-        ))
+        const form = inputs.map(input => {
+            if (!this.state.isSignUp && input.id === 'passwordConfirm') {
+                return null
+            } else {
+                return (
+                    <Input
+                        key={input.id}
+                        elementType={input.config.elementType}
+                        elementConfig={input.config.elementConfig}
+                        value={input.config.value}
+                        changed={(e) => this.inputChangedHandler(e, input.id)}
+                        isValid={input.config.valid}
+                        shouldValidate={input.config.validation}
+                        touched={input.config.touched}
+                        validationError={input.config.validationError}
+                    />
+                )
+            }
+        })
 
         return (
             <div className={classes.Auth}>
@@ -122,6 +159,12 @@ class Auth extends Component {
                     {form}
                     <Button btnType='Success'>SUBMIT</Button>
                 </form>
+                <Button
+                    btnType='Danger'
+                    clicked={this.switchAuthModeHandler}
+                >
+                    SWITCH TO {this.state.isSignUp ? 'SIGN IN' : 'SIGN UP'}
+                </Button>
             </div>
         )
     }
