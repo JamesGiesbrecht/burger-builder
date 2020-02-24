@@ -145,6 +145,7 @@ class ContactData extends Component {
     }
 
     orderHandler = (e) => {
+        e.preventDefault()
         const formData = {}
         //  Mapping each element in orderform to its value
         for (let formName in this.state.orderForm) {
@@ -202,9 +203,9 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        price: state.price,
-        isLoading: state.isLoading
+        ingredients: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.price,
+        isLoading: state.order.isLoading
     }
 }
 

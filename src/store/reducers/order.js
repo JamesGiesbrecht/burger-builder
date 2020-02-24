@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PURCHASE_BURGER_SUCCESS:
             const newOrder = {
                 ...action.orderData,
-                id: action.order.id
+                id: action.orderId
             }
             return {
                 ...state,
@@ -23,6 +23,7 @@ const reducer = (state = initialState, action) => {
                 isLoading: false
             }
         case actionTypes.PURCHASE_BURGER_FAIL:
+            console.log(action.error)
             return {
                 ...state,
                 isLoading: false
