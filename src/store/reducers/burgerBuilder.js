@@ -26,8 +26,7 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, updatedState)
         //  After the api call is made this action is called
         case actionTypes.SET_INGREDIENTS:
-            return {
-                ...state,
+            return updateObject(state, {
                 ingredients: {
                     salad: action.ingredients.salad,
                     bacon: action.ingredients.bacon,
@@ -36,12 +35,9 @@ const reducer = (state = initialState, action) => {
                 },
                 price: 4,
                 error: false
-            }
+            })
         case actionTypes.FETCH_INGREDIENTS_FAILED:
-            return {
-                ...state,
-                error: true
-            }
+            return updateObject(state, {error: true})
         default:
             return state
     }
