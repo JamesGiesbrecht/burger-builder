@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
+import { updateObject } from '../utility'
 
 const initialState = {
     ingredients: null,
@@ -14,35 +15,15 @@ const INGREDIENT_PRICES = {
 }
 
 const reducer = (state = initialState, action) => {
-    let newCount
-    let newIngredients
-    let newPrice
     switch(action.type) {
-        case actionTypes.ADD_INGREDIENT:
-            newCount = state.ingredients[action.ingredient] + 1
-            newIngredients = {...state.ingredients}
-            newIngredients[action.ingredient] = newCount
-            //  Adding the price of the ingredient to the total
-            newPrice = state.price + INGREDIENT_PRICES[action.ingredient]
-            return {
-                ...state,
-                ingredients: newIngredients,
-                price: newPrice
+        case actionTypes.CHANGE_INGREDIENT:
+            const updatedIngredient = { [action.ingredient]: state.ingredients[action.ingredient] + (action.isPlus? 1 : -1) }
+            const updatedIngredients = updateObject(state.ingredients, updatedIngredient)
+            const updatedState = {
+                ingredients: updatedIngredients,
+                price: state.price + (action.isPlus? INGREDIENT_PRICES[action.ingredient] : -INGREDIENT_PRICES[action.ingredient]) 
             }
-        case actionTypes.REMOVE_INGREDIENT:
-            newCount = state.ingredients[action.ingredient] - 1
-            if (newCount < 0) {
-                return state
-            }
-            newIngredients = {...state.ingredients}
-            newIngredients[action.ingredient] = newCount
-            //  Subtracting the price of the ingredient to the total
-            newPrice = state.price - INGREDIENT_PRICES[action.ingredient]
-            return {
-                ...state,
-                ingredients: newIngredients,
-                price: newPrice
-            }
+            return updateObject(state, updatedState)
         //  After the api call is made this action is called
         case actionTypes.SET_INGREDIENTS:
             return {
