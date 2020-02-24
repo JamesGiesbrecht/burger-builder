@@ -18,16 +18,8 @@ const purchaseBurgerSuccess = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
-        case actionTypes.PURCHASE_BURGER_START:
-            return updateObject( state, {isLoading: true})
-        case actionTypes.PURCHASE_BURGER_FAIL:
-            console.log(action.error)
-            return updateObject( state, {isLoading: false})
-        case actionTypes.FETCH_ORDERS_START:
-            return updateObject( state, {isLoading: true})
-        case actionTypes.FETCH_ORDERS_FAIL:
-            console.log(action.error)
-            return updateObject( state, {isLoading: false})
+        case actionTypes.AJAX_START: return updateObject( state, {isLoading: true})
+        case actionTypes.AJAX_FAIL: return updateObject( state, {isLoading: false})
         case actionTypes.PURCHASE_INIT: return updateObject( state, {purchased: false})
         case actionTypes.PURCHASE_BURGER_SUCCESS: return purchaseBurgerSuccess(state, action)
         case actionTypes.FETCH_ORDERS_SUCCESS: return updateObject( state, {isLoading: false, orders: action.orders})
