@@ -43,6 +43,18 @@ const reducer = (state = initialState, action) => {
                 ingredients: newIngredients,
                 price: newPrice
             }
+        //  After the api call is made this action is called
+        case actionTypes.SET_INGREDIENTS:
+            return {
+                ...state,
+                ingredients: action.ingredients,
+                error: false
+            }
+        case actionTypes.FETCH_INGREDIENTS_FAILED:
+            return {
+                ...state,
+                error: true
+            }
         default:
             return state
     }

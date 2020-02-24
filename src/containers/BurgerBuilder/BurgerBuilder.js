@@ -14,6 +14,10 @@ class BurgerBuilder extends Component {
         purchasing: false
     }
 
+    componentDidMount() {
+        this.props.onInitIngredients()
+    }
+
     purchaseCancelHandler = () => {
         this.setState({purchasing: false})
     }
@@ -95,14 +99,13 @@ const mapStateToProps = state => {
     return {
         ingredients: state.ingredients,
         price: state.price,
-        purchasable: state.purchasable,
         error: state.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        initializeIngredients: () => dispatch(),
+        onInitIngredients: () => dispatch(actionTypes.initIngredients()),
         onIngredientAdded: (type) => dispatch(actionTypes.addIngredient(type)),
         onIngredientRemoved: (type) => dispatch(actionTypes.removeIngredient(type))
     }
