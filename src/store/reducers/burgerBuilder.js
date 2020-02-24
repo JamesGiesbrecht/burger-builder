@@ -1,15 +1,9 @@
 import * as actionTypes from '../actions/actionTypes'
-import axios from 'axios'
 
 const initialState = {
-    ingredients: {
-        salad: 0,
-        meat: 0,
-        cheese: 0,
-        bacon: 0
-    },
+    ingredients: null,
     price: 4,
-    purchaseable: false
+    error: false
 }
 
 const INGREDIENT_PRICES = {
@@ -24,19 +18,6 @@ const reducer = (state = initialState, action) => {
     let newIngredients
     let newPrice
     switch(action.type) {
-        case actionTypes.INITIALIZE_INGREDIENTS:
-            axios.get('https://burger-builder-4d3f4.firebaseio.com/ingredients.json')
-                .then(response => {
-                    console.log(response.data)
-                    return {
-                        ...state,
-                        ingredients: response.data
-                    }
-                })
-                .catch(error => {
-                    // this.setState({error: true})
-                })
-            break
         case actionTypes.ADD_INGREDIENT:
             newCount = state.ingredients[action.ingredient] + 1
             newIngredients = {...state.ingredients}

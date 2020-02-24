@@ -11,14 +11,7 @@ import * as actionTypes from '../../store/actions/'
 
 class BurgerBuilder extends Component {
     state = {
-        //  Following 3 are more local UI state
-        purchasing: false,
-        isLoading: false,
-        error: false
-    }
-
-    componentDidMount() {
-        // this.props.initializeIngredients()
+        purchasing: false
     }
 
     purchaseCancelHandler = () => {
@@ -56,7 +49,7 @@ class BurgerBuilder extends Component {
         }
         //  Conditionally rendering summary if loading
         let orderSummary
-        let burger = this.state.error ? <p>Ingredients cannot be loaded</p> : <Spinner />
+        let burger = this.props.error ? <p>Ingredients cannot be loaded</p> : <Spinner />
 
         //  Display burger after retriving from db
         if (this.props.ingredients) {
@@ -102,7 +95,8 @@ const mapStateToProps = state => {
     return {
         ingredients: state.ingredients,
         price: state.price,
-        purchasable: state.purchasable
+        purchasable: state.purchasable,
+        error: state.error
     }
 }
 
