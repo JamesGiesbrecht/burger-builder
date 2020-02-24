@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import ContactData from './ContactData/ContactData'
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary'
 import { connect } from 'react-redux'
@@ -14,20 +14,26 @@ class Checkout extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <CheckoutSummary
-                    ingredients={this.props.ingredients}
-                    checkoutCancelled={this.checkoutCancelledHandler}
-                    checkoutContinued={this.checkoutContinuedHandler}
-                />
-                {/* Takes the path that is in the url bar and appends contact-data */}
-                <Route
-                    path={this.props.match.path + '/contact-data'}
-                    component={ContactData}
-                />
-            </div>
+        // If there are no ingredients in state we redirect to the root
+        const summary = (
+            this.props.ingredients ? 
+                <div>
+                    <CheckoutSummary
+                        ingredients={this.props.ingredients}
+                        checkoutCancelled={this.checkoutCancelledHandler}
+                        checkoutContinued={this.checkoutContinuedHandler}
+                    />
+                    {/* Takes the path that is in the url bar and appends contact-data */}
+                    <Route
+                        path={this.props.match.path + '/contact-data'}
+                        component={ContactData}
+                    />
+                </div>
+            :
+                <Redirect to='/'/>
         )
+
+        return summary
     }
 }
 
