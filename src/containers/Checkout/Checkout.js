@@ -14,9 +14,10 @@ class Checkout extends Component {
     }
 
     render() {
-        // If there are no ingredients in state we redirect to the root
+        //  If there are ingredients and purchsed is false show the form
+        //  If there are no ingredients or purchased is true redirect to root
         const summary = (
-            this.props.ingredients ? 
+            this.props.ingredients && !this.props.purchased ? 
                 <div>
                     <CheckoutSummary
                         ingredients={this.props.ingredients}
@@ -39,7 +40,8 @@ class Checkout extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.burgerBuilder.ingredients
+        ingredients: state.burgerBuilder.ingredients,
+        purchased: state.order.purchased
     }
 }
 
