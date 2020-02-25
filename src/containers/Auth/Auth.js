@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import axios from '../../axios/axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import { Redirect } from 'react-router-dom'
 
 class Auth extends Component {
     state = {
@@ -144,6 +145,10 @@ class Auth extends Component {
     }
 
     render() {
+        //  Redirecting after login
+        if (this.props.isLoggedIn) {
+            return <Redirect to='/' />
+        }
         const inputs = []
         for (let key in this.state.controls) {
             inputs.push({
@@ -201,7 +206,8 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         isLoading: state.auth.isLoading,
-        error: state.auth.error
+        error: state.auth.error,
+        isLoggedIn: state.auth.token !== null
     }
 }
 
