@@ -6,6 +6,7 @@ import * as actionTypes from '../../store/actions'
 import { connect } from 'react-redux'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import axios from '../../axios/axios-orders'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 class Auth extends Component {
     state = {
@@ -145,28 +146,33 @@ class Auth extends Component {
             })
         }
 
-        const form = inputs.map(input => {
-            if (!this.state.isSignUp && input.id === 'passwordConfirm') {
-                return null
-            } else {
-                return (
-                    <Input
-                        key={input.id}
-                        elementType={input.config.elementType}
-                        elementConfig={input.config.elementConfig}
-                        value={input.config.value}
-                        changed={(e) => this.inputChangedHandler(e, input.id)}
-                        isValid={input.config.valid}
-                        shouldValidate={input.config.validation}
-                        touched={input.config.touched}
-                        validationError={input.config.validationError}
-                    />
-                )
-            }
-        })
+        const form = this.props.isLoading ?
+            <Spinner />
+            :
+            inputs.map(input => {
+                // displaying the password confirm field if in sign up mode
+                if (!this.state.isSignUp && input.id === 'passwordConfirm') {
+                    return null
+                } else {
+                    return (
+                        <Input
+                            key={input.id}
+                            elementType={input.config.elementType}
+                            elementConfig={input.config.elementConfig}
+                            value={input.config.value}
+                            changed={(e) => this.inputChangedHandler(e, input.id)}
+                            isValid={input.config.valid}
+                            shouldValidate={input.config.validation}
+                            touched={input.config.touched}
+                            validationError={input.config.validationError}
+                        />
+                    )
+                }
+            })
 
         return (
             <div className={classes.Auth}>
+                {this.props.error ? <p>{this.props.error.message}</p> : null /* displaying the error message if there is one */}
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType='Success'>SUBMIT</Button>
@@ -182,10 +188,17 @@ class Auth extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        isLoading: state.auth.isLoading,
+        error: state.auth.error
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSignUp) => dispatch(actionTypes.auth(email, password, isSignUp))
     }
 }
 
-export default connect(null, mapDispatchToProps)(withErrorHandler(Auth, axios))
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Auth, axios))
