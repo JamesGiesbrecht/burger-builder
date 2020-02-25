@@ -1,8 +1,10 @@
 import React from 'react'
 import classes from './NavigationItems.module.css'
 import NavigationItem from './NavigationItem/NavigationItem'
+import * as actionTypes from '../../../store/actions/'
+import { connect } from 'react-redux'
 
-const NavigationItems = () => (
+const NavigationItems = (props) => (
     <ul className={classes.NavigationItems}>
         <NavigationItem
             link={'/'}
@@ -10,17 +12,40 @@ const NavigationItems = () => (
         >
             Burger Builder
         </NavigationItem>
-        <NavigationItem
-            link={'/orders'}
-        >
-            Orders
-        </NavigationItem>
-        <NavigationItem
-            link={'/auth'}
-        >
-            Login
-        </NavigationItem>
+        {props.isLoggedIn ?
+            <>
+                <NavigationItem
+                    link={'/orders'}
+                >
+                    Orders
+                </NavigationItem>
+                <NavigationItem
+                    onClick={props.onLogout}
+                    link={'/'}
+                >
+                    Logout
+                </NavigationItem>
+            </>
+            :
+            <NavigationItem
+                link={'/auth'}
+            >
+                Login
+            </NavigationItem>
+        }
     </ul>
 )
 
-export default NavigationItems
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: state.auth.userId
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogout: () => dispatch(actionTypes.logout())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationItems)
