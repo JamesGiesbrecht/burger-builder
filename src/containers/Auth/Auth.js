@@ -58,7 +58,9 @@ class Auth extends Component {
                 touched: false
             }
         },
-        isSignUp: true
+        isSignUp: true,
+        testEmail: 'test@jamesgiesbrecht.ca',
+        testPassword: 'password'
     }
 
     checkValid = (el) => {
@@ -137,6 +139,10 @@ class Auth extends Component {
         })
     }
 
+    testUserLogin = () => {
+        this.props.onAuth(this.state.testEmail, this.state.testPassword, false)
+    }
+
     render() {
         const inputs = []
         for (let key in this.state.controls) {
@@ -183,6 +189,10 @@ class Auth extends Component {
                 >
                     SWITCH TO {this.state.isSignUp ? 'SIGN IN' : 'SIGN UP'}
                 </Button>
+                <hr/>
+                <Button btnType='Success' clicked={this.testUserLogin}>QUICK SIGN IN WITH TEST USER</Button>
+                <p><strong>Email:</strong> {this.state.testEmail}</p>
+                <p><strong>Password:</strong> {this.state.testPassword}</p>
             </div>
         )
     }
