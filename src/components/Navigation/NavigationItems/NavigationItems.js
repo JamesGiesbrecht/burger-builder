@@ -1,8 +1,6 @@
 import React from 'react'
 import classes from './NavigationItems.module.css'
 import NavigationItem from './NavigationItem/NavigationItem'
-import * as actionTypes from '../../../store/actions/'
-import { connect } from 'react-redux'
 
 const NavigationItems = (props) => (
     <ul className={classes.NavigationItems}>
@@ -36,16 +34,4 @@ const NavigationItems = (props) => (
     </ul>
 )
 
-const mapStateToProps = state => {
-    return {
-        isLoggedIn: state.auth.userId
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onLogout: () => dispatch(actionTypes.logout())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationItems)
+export default NavigationItems

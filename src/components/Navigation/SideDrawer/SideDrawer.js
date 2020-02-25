@@ -17,7 +17,7 @@ const SideDrawer = (props) => {
                     <Logo />
                 </div>
                 <nav>
-                    <NavigationItems />
+                    <NavigationItems isLoggedIn={props.isLoggedIn} onLogout={props.onLogout}/>
                 </nav>
             </div>
         </>

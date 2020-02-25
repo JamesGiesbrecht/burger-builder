@@ -13,7 +13,7 @@ const Toolbar = (props) => (
             <Logo />
         </div>
         <nav className={classes.DesktopOnly}>
-            <NavigationItems />
+            <NavigationItems isLoggedIn={props.isLoggedIn} onLogout={props.onLogout}/>
         </nav>
     </header>
 )
