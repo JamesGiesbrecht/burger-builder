@@ -64,6 +64,13 @@ class Auth extends Component {
         testPassword: 'password'
     }
 
+    componentDidMount() {
+        // If a burger build has not been started and the redirect is not set to root, set redirect to root
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+            this.props.onSetRedirect()
+        }
+    }
+
     checkValid = (el) => {
         let isValid = true
 
@@ -145,9 +152,9 @@ class Auth extends Component {
     }
 
     render() {
-        //  Redirecting after login
+        //  Redirecting after login to previous page
         if (this.props.isLoggedIn) {
-            return <Redirect to='/' />
+            return <Redirect to={this.props.authRedirectPath} />
         }
         const inputs = []
         for (let key in this.state.controls) {
@@ -207,13 +214,16 @@ const mapStateToProps = state => {
     return {
         isLoading: state.auth.isLoading,
         error: state.auth.error,
-        isLoggedIn: state.auth.token !== null
+        isLoggedIn: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, isSignUp) => dispatch(actionTypes.auth(email, password, isSignUp))
+        onAuth: (email, password, isSignUp) => dispatch(actionTypes.auth(email, password, isSignUp)),
+        onSetRedirect: (path) => dispatch(actionTypes.setAuthRedirect('/'))
     }
 }
 
