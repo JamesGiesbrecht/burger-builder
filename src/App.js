@@ -5,6 +5,7 @@ import Checkout from './containers/Checkout/Checkout'
 import Orders from './containers/Orders/Orders'
 import Auth from './containers/Auth/Auth'
 import { Route, Switch } from 'react-router-dom'
+import Logout from './containers/Auth/Logout/Logout'
 
 class App extends Component {
   constructor() {
@@ -22,6 +23,7 @@ class App extends Component {
           <Route path='/checkout' component={Checkout} />
           <Route path='/orders' component={Orders} />
           <Route path='/auth' component={Auth} />
+          <Route path='/logout' component={Logout} />
           {/* Exact only loads this route if it matches the path exactly */}
           <Route path='/' exact component={BurgerBuilder} />
         </Switch>

@@ -18,8 +18,7 @@ const NavigationItems = (props) => (
                     Orders
                 </NavigationItem>
                 <NavigationItem
-                    onClick={props.onLogout}
-                    link={'/'}
+                    link={'/logout'}
                 >
                     Logout
                 </NavigationItem>
