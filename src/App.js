@@ -6,13 +6,12 @@ import Orders from './containers/Orders/Orders'
 import Auth from './containers/Auth/Auth'
 import { Route, Switch } from 'react-router-dom'
 import Logout from './containers/Auth/Logout/Logout'
+import { connect } from 'react-redux'
+import * as actionTypes from './store/actions/'
 
 class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-
-    }
+  componentDidMount() {
+    this.props.onAuthStateCheck()
   }
   
   render() {
@@ -32,4 +31,10 @@ class App extends Component {
   }
 }
 
-export default App
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuthStateCheck: () => dispatch(actionTypes.authCheckState())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App)
