@@ -25,7 +25,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.AUTH_FAIL:         return updateObject(state, {error: action.error, isLoading: false})
         case actionTypes.AUTH_LOGOUT:       return updateObject(state, {token: null, userId: null})
         case actionTypes.SET_AUTH_REDIRECT: return updateObject(state, {authRedirectPath: action.path})
-        default:                        return state
+        default:                            return state
     }
 }
 
