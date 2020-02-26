@@ -7,7 +7,7 @@ import Input from '../../../components/UI/Input/Input'
 import { connect } from 'react-redux'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import * as actionTypes from '../../../store/actions'
-import { updateObject } from '../../../shared/utility'
+import { updateObject, checkValid } from '../../../shared/utility'
 
 class ContactData extends Component {
     state = {
@@ -79,7 +79,8 @@ class ContactData extends Component {
                 value: '',
                 valid: false,
                 validation: {
-                    required: true
+                    required: true,
+                    isEmail: true
                 },
                 validationError: null,
                 touched: false
@@ -96,27 +97,6 @@ class ContactData extends Component {
         formIsValid: false
     }
 
-    checkValid = (el) => {
-        let isValid = true
-        console.log(el.value + ' ' + el.value.length)
-        if (el.validation.required && el.value.trim() === '') {
-            //  if value is empty, valid is false
-            isValid = false
-        }
-
-        if (el.validation.minLength && el.value.length < el.validation.minLength) {
-            // if value is less than min length, valid is false
-            isValid = false
-        }
-
-        if (el.validation.maxLength && el.value.length > el.validation.maxLength) {
-            // if value is more than max length, valid is false
-            isValid = false
-        }
-
-        return isValid
-    }
-
     inputChangedHandler = (e, name) => {
         //  Since the spread operator is a shallow clone we also need to copy the affected element
         let updatedElement = updateObject(this.state.orderForm[name], {
@@ -125,7 +105,7 @@ class ContactData extends Component {
         console.log(updatedElement.value)
         //  Updating the value of that element
         if (updatedElement.validation) {
-            const isValid = this.checkValid(updatedElement)
+            const isValid = checkValid(updatedElement)
             updatedElement = updateObject(updatedElement, {
                 valid: isValid,
                 touched: true,
