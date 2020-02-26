@@ -56,7 +56,6 @@ export const auth = (email, password, isSignUp) => {
         
             axios.post(url + apiKey, authData)
             .then(response => {
-                console.log(response)
                 //  Calculating the time that the token expires
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000)
                 localStorage.setItem('token', response.data.idToken)
@@ -66,7 +65,6 @@ export const auth = (email, password, isSignUp) => {
                 dispatch(checkAuthTimeout(response.data.expiresIn * 1000)) // converting the expiration timer to one hour
             })
             .catch(error =>{
-                console.log(error)
                 dispatch(authFail(error.response.data.error))
             })
     }

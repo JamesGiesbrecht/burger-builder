@@ -102,7 +102,6 @@ class ContactData extends Component {
         let updatedElement = updateObject(this.state.orderForm[name], {
             value: e.target.value
         })
-        console.log(updatedElement.value)
         //  Updating the value of that element
         if (updatedElement.validation) {
             const isValid = checkValid(updatedElement)
