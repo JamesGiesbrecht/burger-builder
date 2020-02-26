@@ -8,6 +8,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import axios from '../../axios/axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import { Redirect } from 'react-router-dom'
+import { updateObject } from '../../shared/utility'
 
 class Auth extends Component {
     state = {
@@ -108,17 +109,17 @@ class Auth extends Component {
 
     inputChangedHandler = (e, name) => {
         //  Updating value so the most recent values are present for validation
-        const updatedElement = {...this.state.controls[name]}
-        updatedElement.value = e.target.value
+        const updatedElement = updateObject(this.state.controls[name], {
+            value: e.target.value
+        })
 
-        const updatedControls = {
-            ...this.state.controls,
-            [name]: {
-                ...updatedElement,
+        const updatedControls = updateObject(this.state.controls, {
+            [name]: updateObject(updatedElement, {
                 valid: this.checkValid(updatedElement),
                 touched: true
-            }
-        }
+            })
+        })
+        
         this.setState({controls: updatedControls})
     }
 

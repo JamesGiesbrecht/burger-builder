@@ -7,6 +7,7 @@ import Input from '../../../components/UI/Input/Input'
 import { connect } from 'react-redux'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import * as actionTypes from '../../../store/actions'
+import { updateObject } from '../../../shared/utility'
 
 class ContactData extends Component {
     state = {
@@ -97,7 +98,7 @@ class ContactData extends Component {
 
     checkValid = (el) => {
         let isValid = true
-
+        console.log(el.value + ' ' + el.value.length)
         if (el.validation.required && el.value.trim() === '') {
             //  if value is empty, valid is false
             isValid = false
@@ -117,19 +118,25 @@ class ContactData extends Component {
     }
 
     inputChangedHandler = (e, name) => {
-        //  Cloning the form object
-        const updatedForm = { ...this.state.orderForm }
         //  Since the spread operator is a shallow clone we also need to copy the affected element
-        const updatedElement = { ...updatedForm[name] }
+        let updatedElement = updateObject(this.state.orderForm[name], {
+            value: e.target.value
+        })
+        console.log(updatedElement.value)
         //  Updating the value of that element
-        updatedElement.value = e.target.value
         if (updatedElement.validation) {
-            updatedElement.valid = this.checkValid(updatedElement)
-            updatedElement.touched = true
-            updatedElement.validationError = updatedElement.valid ? null : "Please enter a valid " + name
+            const isValid = this.checkValid(updatedElement)
+            updatedElement = updateObject(updatedElement, {
+                valid: isValid,
+                touched: true,
+                validationError: isValid ? null : "Please enter a valid " + name
+            })
         }
+
         // copying the new element to the new form
-        updatedForm[name] = updatedElement
+        const updatedForm = updateObject(this.state.orderForm, {
+            [name]: updatedElement
+        })
         
         //  Defaulting overall validity to true
         let formIsValid = true
