@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import Order from '../../components/Order/Order'
 import axios from '../../axios/axios-orders'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
@@ -6,23 +6,21 @@ import * as actionTypes from '../../store/actions'
 import { connect } from 'react-redux'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
-class Orders extends Component {
+const Orders = (props) => {
+    useEffect(() => {
+        props.onFetchOrders(props.token, props.userId)
+        // eslint-disable-next-line
+    }, [])
 
-    componentDidMount() {
-        this.props.onFetchOrders(this.props.token, this.props.userId)
-    }
-
-    render() {
-        const orders = (
-            this.props.isLoading ?
-            <Spinner />
-            :
-            this.props.orders.map(order => (
-                <Order key={order.id} ingredients={order.ingredients} price={order.price} />
-            ))
-        )
-        return orders
-    }
+    const orders = (
+        props.isLoading ?
+        <Spinner />
+        :
+        props.orders.map(order => (
+            <Order key={order.id} ingredients={order.ingredients} price={order.price} />
+        ))
+    )
+    return orders
 }
 
 const mapStateToProps = state => {
