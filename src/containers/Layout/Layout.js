@@ -8,7 +8,7 @@ const Layout = (props) => {
     const [showSideDrawer, setShowSideDrawer] = useState(false)
     
     const sideDrawerToggleHandler = () => {
-        setShowSideDrawer(prevShowSideDrawer => !prevShowSideDrawer)
+        setShowSideDrawer(!showSideDrawer)
     }
     
     return (
