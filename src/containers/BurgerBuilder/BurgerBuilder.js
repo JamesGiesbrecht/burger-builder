@@ -12,10 +12,11 @@ import * as actionTypes from '../../store/actions/'
 export const BurgerBuilder = (props) => {
     const [purchasing, setPurchasing] = useState(false)
 
+    const { onInitIngredients } = props
+
     useEffect(() => {
-        props.onInitIngredients()
-        // eslint-disable-next-line
-    }, [])
+        onInitIngredients()
+    }, [onInitIngredients])
 
     const purchaseCancelHandler = () => {
         setPurchasing(false)

@@ -7,10 +7,12 @@ import { connect } from 'react-redux'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
 const Orders = (props) => {
+
+    const { onFetchOrders, token, userId } = props
+
     useEffect(() => {
-        props.onFetchOrders(props.token, props.userId)
-        // eslint-disable-next-line
-    }, [])
+        onFetchOrders(token, userId)
+    }, [onFetchOrders, token, userId])
 
     const orders = (
         props.isLoading ?

@@ -73,8 +73,7 @@ const Auth = (props) => {
         if (!buildingBurger && authRedirectPath !== '/') {
             onSetRedirect()
         }
-        // eslint-disable-next-line
-    }, [buildingBurger, authRedirectPath])
+    }, [buildingBurger, authRedirectPath, onSetRedirect])
 
     const inputChangedHandler = (e, name) => {
         //  Updating value so the most recent values are present for validation
