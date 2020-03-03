@@ -2,7 +2,6 @@ import React, { Suspense, useEffect } from 'react'
 import Layout from './containers/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 import Spinner from './components/UI/Spinner/Spinner'
-import Checkout from './containers/Checkout/Checkout'
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import Logout from './containers/Auth/Logout/Logout'
 import { connect } from 'react-redux'
@@ -10,6 +9,7 @@ import * as actionTypes from './store/actions/'
 
 const LazyOrders = React.lazy(() => import('./containers/Orders/Orders'))
 const LazyAuth = React.lazy(() => import('./containers/Auth/Auth'))
+const LazyCheckout = React.lazy(() => import('./containers/Checkout/Checkout'))
 
 const App = (props) => {
   const { onAuthStateCheck } = props
@@ -24,10 +24,10 @@ const App = (props) => {
   if (props.isLoggedIn) {
     routes = (
       <Switch>
-        <Route path='/checkout' component={Checkout} />
-        <Route path='/orders' render={() => <Suspense fallback={<Spinner />}><LazyOrders /></Suspense>} />
+        <Route path='/checkout' render={() => <LazyCheckout />} />
+        <Route path='/orders' render={() => <LazyOrders />} />
         <Route path='/logout' component={Logout} />
-        <Route path='/auth' render={() => <Suspense fallback={<Spinner />}><LazyAuth /></Suspense>} />
+    <Route path='/auth' render={() => <LazyAuth />} />
         <Route path='/' exact component={BurgerBuilder} />
         <Redirect to='/' />
       </Switch>
@@ -36,7 +36,7 @@ const App = (props) => {
     routes = (
       <Switch>
         {/* Switch only loads the first route that matches */}
-        <Route path='/auth' render={() => <Suspense fallback={<Spinner />}><LazyAuth /></Suspense>} />
+        <Route path='/auth' render={() => <LazyAuth />} />
         {/* Exact only loads this route if it matches the path exactly */}
         <Route path='/' exact component={BurgerBuilder} />
         <Redirect to='/' />
@@ -46,7 +46,7 @@ const App = (props) => {
 
   return (
     <Layout>
-      {routes}
+      <Suspense fallback={<Spinner />}>{routes}</Suspense>
     </Layout>
   )
 }
