@@ -1,39 +1,34 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import classes from './Layout.module.css'
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer'
 import { connect } from 'react-redux'
 
-class Layout extends Component {
-    state = {
-        showSideDrawer: false
+const Layout = (props) => {
+    const [showSideDrawer, setShowSideDrawer] = useState(false)
+    
+    const sideDrawerToggleHandler = () => {
+        setShowSideDrawer(prevShowSideDrawer => !prevShowSideDrawer)
     }
     
-    sideDrawerToggleHandler = () => {
-        this.setState(prevState => ({
-            showSideDrawer: !prevState.showSideDrawer
-        }))
-    }
+    return (
+        <>
+            <Toolbar
+                isLoggedIn={props.isLoggedIn}
+                toggle={sideDrawerToggleHandler}
+            />
+            <SideDrawer
+                isLoggedIn={props.isLoggedIn}
+                isOpen={showSideDrawer}
+                toggle={sideDrawerToggleHandler}
+            />
+            <div>Backdrop</div>
+            <main className={classes.Content}>
+                {props.children}
+            </main>
+        </>
+    )
     
-    render() {
-        return (
-            <>
-                <Toolbar
-                    isLoggedIn={this.props.isLoggedIn}
-                    toggle={this.sideDrawerToggleHandler}
-                />
-                <SideDrawer
-                    isLoggedIn={this.props.isLoggedIn}
-                    isOpen={this.state.showSideDrawer}
-                    toggle={this.sideDrawerToggleHandler}
-                />
-                <div>Backdrop</div>
-                <main className={classes.Content}>
-                    {this.props.children}
-                </main>
-            </>
-        )
-    }
 }
 
 const mapStateToProps = state => {
