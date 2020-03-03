@@ -1,38 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Modal from '../../components/UI/Modal/Modal'
+import useAjaxErrorHandler from '../../hooks/ajaxErrorHandler'
 
 const withErrorHandler = (WrappedComponent, axios) => {
     return props => {
-        const [error, setError] = useState(null)
-
-        //  Clearing the error message on each request
-        const reqInterceptor = axios.interceptors.request.use(request => {
-            setError(null)
-            return request
-        })
-        //  If there is an error set it to the error state
-        const resInterceptor = axios.interceptors.response.use(response => response, err => {
-            setError(err)
-        })
-
-        useEffect(() => {
-            return () => {
-                //  Removing interceptors when done with this class to improve performance and prevent momory leaks and errors
-                axios.interceptors.request.eject(reqInterceptor)
-                axios.interceptors.response.eject(resInterceptor)
-            };
-        }, [reqInterceptor, resInterceptor])
-
-
-        const errorConfirmedHandler = () => {
-            setError(null)
-        }
+        // this custom hook abstracts the error handling so we can use this anywhere we want and handle the error how we see fit
+        const [error, clearError] = useAjaxErrorHandler(axios)
 
         return (
             <>
                 <Modal 
                     show={error}
-                    closeModal={errorConfirmedHandler}
+                    closeModal={clearError}
                 >
                     {error ? error.message : null}
                 </Modal>
