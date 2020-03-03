@@ -24,10 +24,10 @@ const App = (props) => {
   if (props.isLoggedIn) {
     routes = (
       <Switch>
-        <Route path='/checkout' render={() => <LazyCheckout />} />
-        <Route path='/orders' render={() => <LazyOrders />} />
+        <Route path='/checkout' render={(props) => <LazyCheckout {...props}/>} />
+        <Route path='/orders' render={(props) => <LazyOrders {...props}/>} />
         <Route path='/logout' component={Logout} />
-    <Route path='/auth' render={() => <LazyAuth />} />
+    <Route path='/auth' render={(props) => <LazyAuth {...props}/>} />
         <Route path='/' exact component={BurgerBuilder} />
         <Redirect to='/' />
       </Switch>
@@ -36,7 +36,7 @@ const App = (props) => {
     routes = (
       <Switch>
         {/* Switch only loads the first route that matches */}
-        <Route path='/auth' render={() => <LazyAuth />} />
+        <Route path='/auth' render={(props) => <LazyAuth {...props}/>} />
         {/* Exact only loads this route if it matches the path exactly */}
         <Route path='/' exact component={BurgerBuilder} />
         <Redirect to='/' />
